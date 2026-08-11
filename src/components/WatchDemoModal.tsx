@@ -51,7 +51,7 @@ export const WatchDemoModal: React.FC<WatchDemoModalProps> = ({ isOpen, onClose,
         <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-black border border-white/10 mb-4 flex items-center justify-center group shadow-2xl">
           <video
             ref={videoRef}
-            src="/lv_0_20260811124219.mp4"
+            src="/demo.mp4"
             autoPlay
             loop
             muted
