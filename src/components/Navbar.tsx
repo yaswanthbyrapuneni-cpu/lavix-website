@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, ArrowRight, Sparkles } from 'lucide-react';
-import { SITE_CONFIG } from '../config/siteConfig';
 import { LavixLogo } from './LavixLogo';
 
 interface NavbarProps {

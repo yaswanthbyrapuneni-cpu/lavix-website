@@ -25,8 +25,8 @@ interface BookDemoModalProps {
 
 export const BookDemoModal: React.FC<BookDemoModalProps> = ({ isOpen, onClose }) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [submittedData, setSubmittedData] = useState<BookDemoFormValues | null>(null);
+  const [_errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [_submittedData, setSubmittedData] = useState<BookDemoFormValues | null>(null);
 
   const {
     register,
