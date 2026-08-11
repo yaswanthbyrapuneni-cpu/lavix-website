@@ -1,12 +1,15 @@
 import nodemailer from 'nodemailer';
 
-export default async (req) => {
-  if (req.method !== 'POST') {
-    return new Response(JSON.stringify({ success: false, error: 'Method not allowed' }), { status: 405 });
+export const handler = async (event) => {
+  if (event.httpMethod !== 'POST') {
+    return {
+      statusCode: 405,
+      body: JSON.stringify({ success: false, error: 'Method not allowed' }),
+    };
   }
 
   try {
-    const data = await req.json();
+    const data = JSON.parse(event.body);
     const { fullName, email, phone, storeName, city, deploymentType, preferredDate } = data;
 
     const transporter = nodemailer.createTransport({
@@ -27,7 +30,7 @@ export default async (req) => {
       html: `
         <div style="font-family:Arial,sans-serif;color:#2A1C18;background:#FFF9F2;padding:20px">
           <div style="max-width:600px;margin:0 auto;background:#fff;padding:30px;border-radius:16px;border:1px solid #F1E4D3">
-            <h2 style="color:#6E1F1F;margin-top:0">🎉 New LAVIX Demo Request</h2>
+            <h2 style="color:#6E1F1F;margin-top:0">New LAVIX Demo Request</h2>
             <p style="font-size:14px;color:#5E4A43">A retailer has scheduled a live virtual trial room demo.</p>
             <table style="width:100%;border-collapse:collapse;font-size:14px;margin-top:20px">
               <tr style="border-bottom:1px solid #F1E4D3"><td style="padding:10px 0;font-weight:bold;color:#6E1F1F;width:40%">Full Name:</td><td>${fullName}</td></tr>
@@ -43,14 +46,17 @@ export default async (req) => {
       `,
     });
 
-    return new Response(JSON.stringify({ success: true, message: 'Demo request sent successfully!' }), {
-      status: 200,
+    return {
+      statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
-    });
+      body: JSON.stringify({ success: true, message: 'Demo request sent successfully!' }),
+    };
   } catch (err) {
     console.error('SMTP error:', err);
-    return new Response(JSON.stringify({ success: false, error: err.message }), { status: 500 });
+    return {
+      statusCode: 500,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ success: false, error: err.message }),
+    };
   }
 };
-
-export const config = { path: '/api/book-demo' };
