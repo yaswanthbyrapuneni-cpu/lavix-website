@@ -25,8 +25,7 @@ interface BookDemoModalProps {
 
 export const BookDemoModal: React.FC<BookDemoModalProps> = ({ isOpen, onClose }) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [_errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [_submittedData, setSubmittedData] = useState<BookDemoFormValues | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const {
     register,
@@ -44,7 +43,6 @@ export const BookDemoModal: React.FC<BookDemoModalProps> = ({ isOpen, onClose })
 
   const onSubmit = async (data: BookDemoFormValues) => {
     setErrorMessage(null);
-    setSubmittedData(data);
     try {
       // 1. Try sending via Python Backend (/api/book-demo)
       const res = await fetch('/api/book-demo', {
@@ -54,28 +52,8 @@ export const BookDemoModal: React.FC<BookDemoModalProps> = ({ isOpen, onClose })
       });
 
       if (!res.ok) {
-        // 2. Fallback to Web3Forms / mailto if local Python server is un-reachable
-        const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || '';
-        if (accessKey) {
-          await fetch('https://api.web3forms.com/submit', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-            body: JSON.stringify({
-              access_key: accessKey,
-              subject: `New LAVIX Demo Request: ${data.fullName} (${data.storeName})`,
-              from_name: `${data.fullName} (LAVIX Customer)`,
-              replyto: data.email,
-              to_email: SITE_CONFIG.email,
-              "Full Name": data.fullName,
-              "Work Email": data.email,
-              "Phone Number": data.phone,
-              "Store / Brand Name": data.storeName,
-              "City": data.city,
-              "Hardware Edition": data.deploymentType,
-              "Preferred Date": data.preferredDate,
-            }),
-          });
-        }
+        const errBody = await res.json().catch(() => ({}));
+        throw new Error(errBody.error || `Server error ${res.status}`);
       }
 
       // Trigger celebration confetti
@@ -89,27 +67,12 @@ export const BookDemoModal: React.FC<BookDemoModalProps> = ({ isOpen, onClose })
       setIsSubmitted(true);
     } catch (err) {
       console.error('Submission error:', err);
-      // Fallback to mailto
-      const emailSubject = encodeURIComponent(`LAVIX Demo Booking Request: ${data.fullName} (${data.storeName})`);
-      const emailBody = encodeURIComponent(
-        `Hello AISMARTLIVE Team,\n\nI would like to schedule a live demo for LAVIX.\n\nHere are my booking details:\n` +
-        `• Full Name: ${data.fullName}\n` +
-        `• Work Email: ${data.email}\n` +
-        `• Phone Number: ${data.phone}\n` +
-        `• Store / Brand Name: ${data.storeName}\n` +
-        `• City: ${data.city}\n` +
-        `• Preferred Hardware Edition: ${data.deploymentType}\n` +
-        `• Preferred Demo Date: ${data.preferredDate}\n\n` +
-        `Best regards,\n${data.fullName}`
-      );
-      window.open(`mailto:${SITE_CONFIG.email}?subject=${emailSubject}&body=${emailBody}`, '_blank');
-      setIsSubmitted(true);
+      setErrorMessage('Failed to send your request. Please email us directly at ' + SITE_CONFIG.email);
     }
   };
 
   const handleResetAndClose = () => {
     setIsSubmitted(false);
-    setSubmittedData(null);
     setErrorMessage(null);
     reset();
     onClose();
@@ -254,6 +217,11 @@ export const BookDemoModal: React.FC<BookDemoModalProps> = ({ isOpen, onClose })
                 </div>
                 {errors.preferredDate && <p className="text-[11px] text-red-500 mt-1">{errors.preferredDate.message}</p>}
               </div>
+
+              {/* Error Message */}
+              {errorMessage && (
+                <p className="text-[11px] text-red-500 text-center bg-red-50 rounded-xl px-3 py-2">{errorMessage}</p>
+              )}
 
               {/* Submit Button */}
               <button
