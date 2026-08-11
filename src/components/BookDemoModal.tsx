@@ -45,7 +45,7 @@ export const BookDemoModal: React.FC<BookDemoModalProps> = ({ isOpen, onClose })
     setErrorMessage(null);
     try {
       // 1. Try sending via Python Backend (/api/book-demo)
-      const res = await fetch('/api/book-demo', {
+      const res = await fetch('/.netlify/functions/book-demo', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
