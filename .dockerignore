@@ -1,0 +1,22 @@
+# .git holds a second copy of the LFS video objects (~170MB) — excluding it
+# roughly halves the build context.
+.git
+.gitattributes
+.gitignore
+
+node_modules
+dist
+
+.env
+.env.*
+!.env.example
+
+# Python mailer, superseded by /api/book-demo in the Flask backend
+server.py
+requirements.txt
+
+README.md
+*.log
+.vscode
+.idea
+.DS_Store
