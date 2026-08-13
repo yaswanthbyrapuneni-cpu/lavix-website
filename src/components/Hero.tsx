@@ -115,7 +115,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBookDemo, onOpenWatchDemo }) =
                   loop
                   muted
                   playsInline
-                  preload="auto"
+                  preload="metadata"
                   poster="/intro-poster.jpg"
                   controlsList="nodownload noplaybackrate"
                   disablePictureInPicture
