@@ -44,8 +44,8 @@ export const BookDemoModal: React.FC<BookDemoModalProps> = ({ isOpen, onClose })
   const onSubmit = async (data: BookDemoFormValues) => {
     setErrorMessage(null);
     try {
-      // 1. Try sending via Python Backend (/api/book-demo)
-      const res = await fetch('/.netlify/functions/book-demo', {
+      // Served by the Flask backend on the VM (nginx routes /api/* there).
+      const res = await fetch('/api/book-demo', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
