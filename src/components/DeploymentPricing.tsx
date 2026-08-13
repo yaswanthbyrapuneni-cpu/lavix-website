@@ -15,8 +15,7 @@ export const DeploymentPricing: React.FC<DeploymentPricingProps> = ({ onOpenBook
       isPopular: false,
       hardwarePrice: 'BYOD',
       hardwarePriceLabel: 'tablet / phone',
-      softwareMonthly: '₹600',
-      softwareYearly: '₹7,200',
+      softwareYearly: '₹75,000',
       specs: [
         'Android Tablet & Mobile App',
         '4K Camera Support',
@@ -32,8 +31,7 @@ export const DeploymentPricing: React.FC<DeploymentPricingProps> = ({ onOpenBook
       subtitle: 'Ideal for Boutiques & Chains',
       hardwarePrice: '₹70,000',
       hardwarePriceLabel: '+ Tax',
-      softwareMonthly: '₹2,500',
-      softwareYearly: '₹30,000',
+      softwareYearly: '₹75,000',
       specs: [
         '32" Touch Display',
         '4K Camera',
@@ -49,8 +47,7 @@ export const DeploymentPricing: React.FC<DeploymentPricingProps> = ({ onOpenBook
       subtitle: 'Enterprise Retail Solution',
       hardwarePrice: '₹87,000',
       hardwarePriceLabel: '+ Tax',
-      softwareMonthly: '₹2,500',
-      softwareYearly: '₹30,000',
+      softwareYearly: '₹75,000',
       specs: [
         '43" Professional Display',
         '4K Camera',
@@ -135,9 +132,8 @@ export const DeploymentPricing: React.FC<DeploymentPricingProps> = ({ onOpenBook
                     <div className="flex items-baseline justify-between">
                       <span className="text-xs text-[#5E4A43]">Software Subscription</span>
                       <div className="text-right">
-                        <span className="font-heading text-lg font-bold text-[#6E1F1F]">{card.softwareMonthly}</span>
-                        <span className="text-xs text-[#5E4A43]"> / Month</span>
-                        <p className="text-[11px] font-semibold text-[#D48B2C]">({card.softwareYearly} / Year)</p>
+                        <span className="font-heading text-lg font-bold text-[#6E1F1F]">{card.softwareYearly}</span>
+                        <span className="text-xs text-[#5E4A43]"> / Year</span>
                       </div>
                     </div>
                   </div>
